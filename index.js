@@ -76,10 +76,7 @@ async function handler(event) {
     return { statusCode: 404, body: JSON.stringify(String(err)) };
   }
 
-  const {
-    all_commit_details: [commitDetails],
-  } = build;
-  if (commitDetails.branch.startsWith('pull/')) {
+  if (build.branch.startsWith('pull/')) {
     return {
       statusCode: 403,
       body: JSON.stringify('size snapshots are only permitted for non-fork pushes'),
@@ -100,7 +97,7 @@ async function handler(event) {
   try {
     const uploadOptions = {
       Bucket: 'eps1lon-material-ui',
-      Key: `artifacts/${commitDetails.branch}/${commitDetails.commit}/size-snapshot.json`,
+      Key: `artifacts/${build.branch}/${build.vcs_revision}/size-snapshot.json`,
     };
     const uploaded = await uploadArtifact(snapshotArtifact, uploadOptions);
 
