@@ -34,7 +34,7 @@ async function loadSnapshotArtifact(build) {
     throw new Error(
       `size-snapshot.json artifact not found. Only ${artifacts.map(
         ({ path }) => path,
-      )} are available`,
+      )} are available in ${artifactsUrl}.`,
     );
   }
 
@@ -73,7 +73,7 @@ async function handler(event) {
   try {
     build = await loadBuild(desiredBuild);
   } catch (err) {
-    return { statusCode: 404, body: err };
+    return { statusCode: 404, body: String(err) };
   }
 
   const {
@@ -82,7 +82,7 @@ async function handler(event) {
   if (commitDetails.branch.startsWith('pull/')) {
     return {
       statusCode: 403,
-      reason: 'size snapshots are only permitted for non-fork pushes',
+      body: 'size snapshots are only permitted for non-fork pushes',
     };
   }
 
@@ -93,7 +93,7 @@ async function handler(event) {
     console.error(err);
     return {
       statusCode: 404,
-      reason: err,
+      body: String(err),
     };
   }
 
