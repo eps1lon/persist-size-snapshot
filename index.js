@@ -73,7 +73,7 @@ async function handler(event) {
   try {
     build = await loadBuild(desiredBuild);
   } catch (err) {
-    return { statusCode: 404, body: String(err) };
+    return { statusCode: 404, body: JSON.stringify(String(err)) };
   }
 
   const {
@@ -82,7 +82,7 @@ async function handler(event) {
   if (commitDetails.branch.startsWith('pull/')) {
     return {
       statusCode: 403,
-      body: 'size snapshots are only permitted for non-fork pushes',
+      body: JSON.stringify('size snapshots are only permitted for non-fork pushes'),
     };
   }
 
@@ -93,7 +93,7 @@ async function handler(event) {
     console.error(err);
     return {
       statusCode: 404,
-      body: String(err),
+      body: JSON.stringify(String(err)),
     };
   }
 
@@ -106,7 +106,7 @@ async function handler(event) {
 
     return {
       statusCode: 200,
-      body: uploaded.Location,
+      body: JSON.stringify(uploaded.Location),
     };
   } catch (err) {
     console.error(err);
