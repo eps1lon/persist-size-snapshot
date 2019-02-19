@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "version": "0.0.1",
+  "name": "persist-size-snapshot",
+  "dependencies": {
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "fs-extra": "^7.0.1",
+    "aws-sdk": "2.405.0"
+  },
+  "scripts": {
+    "preprepare-deploy": "yarn && yarn test",
+    "prepare-deploy": "zip -r deploy.zip package.json node_modules/ index.js",
+    "test": "node index.test.js"
+  }
+}
