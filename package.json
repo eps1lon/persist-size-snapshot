@@ -10,8 +10,10 @@
     "aws-sdk": "2.405.0"
   },
   "scripts": {
-    "preprepare-deploy": "yarn && yarn test",
-    "prepare-deploy": "zip -r deploy.zip package.json node_modules/ index.js",
+    "prebuild": "yarn test",
+    "build": "./prepare_deploy.sh",
+    "build:clean": "rm -rf build/",
+    "rebuild": "yarn build:clean && yarn build",
     "test": "node index.test.js"
   }
 }
