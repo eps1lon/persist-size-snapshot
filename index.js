@@ -14,7 +14,7 @@ async function loadJson(url) {
 }
 
 function getBuildUrl(options) {
-  const { id, org = 'eps1lon' } = options;
+  const { id, org } = options;
 
   return `https://circleci.com/api/v1.1/project/github/${org}/material-ui/${id}`;
 }
@@ -67,7 +67,7 @@ function uploadArtifact(artifact, options) {
 
 async function handler(event) {
   const buildId = +event.queryStringParameters['build-id'];
-  const desiredBuild = { id: buildId };
+  const desiredBuild = { id: buildId, org: 'mui-org' };
 
   let build;
   try {
