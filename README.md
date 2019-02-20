@@ -12,10 +12,11 @@ for the target branch (persisted on the s3 bucket).
 ## use
 ```bash
 # YOUR_AWS_PROFILE must be a valid profile name with access keys
+# GITHUB_ORG is for testing purposes. Otherwise the tested build number might not be valid
 # test
-$ AWS_PROFILE=YOUR_AWS_PROFILE yarn test
+$ AWS_PROFILE=YOUR_AWS_PROFILE GITHUB_ORG=eps1lon yarn test
 # pack a deploy package
-$ AWS_PROFILE=YOUR_AWS_PROFILE yarn prepare-deploy
+$ AWS_PROFILE=YOUR_AWS_PROFILE GITHUB_ORG=eps1lon yarn prepare-deploy
 ```
 
 Be careful if you put this in a monorepo. The deploy package needs to include
