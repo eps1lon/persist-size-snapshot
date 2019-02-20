@@ -16,7 +16,7 @@ for the target branch (persisted on the s3 bucket).
 # test
 $ AWS_PROFILE=YOUR_AWS_PROFILE GITHUB_ORG=eps1lon yarn test
 # pack a deploy package
-$ AWS_PROFILE=YOUR_AWS_PROFILE GITHUB_ORG=eps1lon yarn prepare-deploy
+$ AWS_PROFILE=YOUR_AWS_PROFILE GITHUB_ORG=eps1lon yarn rebuild
 ```
 
 Be careful if you put this in a monorepo. The deploy package needs to include
