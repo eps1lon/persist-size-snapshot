@@ -95,11 +95,17 @@ async function handler(event) {
   }
 
   try {
-    const uploadOptions = {
-      Bucket: 'eps1lon-material-ui',
-      Key: `artifacts/${build.branch}/${build.vcs_revision}/size-snapshot.json`,
-    };
-    const uploaded = await uploadArtifact(snapshotArtifact, uploadOptions);
+    function upload(revision) {
+      const uploadOptions = {
+        Bucket: 'eps1lon-material-ui',
+        Key: `artifacts/${build.branch}/${revision}/size-snapshot.json`,
+      };
+      return uploadArtifact(snapshotArtifact, uploadOptions);
+    }
+
+    // save snapshot under the commit id as well as imitating a symlink `latest`
+    // to the commit id
+    const [uploaded] = await Promise.all([upload(build.vcs_revision), upload('latest')]);
 
     return {
       statusCode: 200,
