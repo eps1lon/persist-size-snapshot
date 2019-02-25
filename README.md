@@ -24,7 +24,6 @@ all the required node_modules/. In a monorepo it is common to "hoist these away"
 
 ## TODO
 
-- point to `mui-org` instead of `eps1lon`
 - unfamiliar with
   - best practices for lambda functions in node (test, deploy)
   - testing practice to test fetch on a rest api and uploading to s3
