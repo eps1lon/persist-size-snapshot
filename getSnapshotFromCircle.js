@@ -13,18 +13,18 @@ async function loadJson(url) {
   return response.json();
 }
 
-function getCircleBuildUrl(options) {
+function getBuildUrl(options) {
   const { id, org = 'mui-org' } = options;
 
   return `https://circleci.com/api/v1.1/project/github/${org}/material-ui/${id}`;
 }
 
-function getCircleArtifactsUrl(options) {
-  return `${getCircleBuildUrl(options)}/artifacts`;
+function getArtifactsUrl(options) {
+  return `${getBuildUrl(options)}/artifacts`;
 }
 
-async function loadCircleSnapshotArtifact(build) {
-  const artifactsUrl = getCircleArtifactsUrl(build);
+async function loadSnapshotArtifact(build) {
+  const artifactsUrl = getArtifactsUrl(build);
   const artifacts = await loadJson(artifactsUrl);
   const snapshotArtifact = artifacts.find(artifact =>
     artifact.path.endsWith('material-ui/size-snapshot.json'),
@@ -41,8 +41,8 @@ async function loadCircleSnapshotArtifact(build) {
   return loadJson(snapshotArtifact.url);
 }
 
-async function loadCircleBuild(desiredBuild) {
-  const buildUrl = getCircleBuildUrl(desiredBuild);
+async function loadBuild(desiredBuild) {
+  const buildUrl = getBuildUrl(desiredBuild);
   return loadJson(buildUrl);
 }
 
@@ -65,12 +65,12 @@ function uploadArtifact(artifact, options) {
   });
 }
 
-async function loadCircleArtifact(buildId) {
+async function handleCircle(buildId) {
   const desiredBuild = { id: buildId, org: process.env.GITHUB_ORG };
 
   let build;
   try {
-    build = await loadCircleBuild(desiredBuild);
+    build = await loadBuild(desiredBuild);
   } catch (err) {
     return { statusCode: 404, body: JSON.stringify(String(err)) };
   }
@@ -84,7 +84,7 @@ async function loadCircleArtifact(buildId) {
 
   let snapshotArtifact;
   try {
-    snapshotArtifact = await loadCircleSnapshotArtifact(desiredBuild);
+    snapshotArtifact = await loadSnapshotArtifact(desiredBuild);
   } catch (err) {
     console.error(err);
     return {
@@ -92,11 +92,6 @@ async function loadCircleArtifact(buildId) {
       body: JSON.stringify(String(err)),
     };
   }
-}
-
-async function handler(event) {
-  const buildId = +event.queryStringParameters['build-id'];
-  const [err, snapshotArtifact] = await loadCircleArtifact(buildId);
 
   try {
     function upload(revision) {
@@ -123,4 +118,4 @@ async function handler(event) {
   }
 }
 
-module.exports = { handler };
+module.exports = handleCircle;

@@ -3,7 +3,7 @@ const fse = require('fs-extra');
 const path = require('path');
 const { handler } = require('./');
 
-['event185.json']
+['azure-event.json']
   .map(fixture => path.join(__dirname, '__fixtures__', fixture))
   .map(async fixturePath => {
     const event = await fse.readJSON(fixturePath);
